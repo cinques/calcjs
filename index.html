@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mini-Framework</title>
+</head>
+<body>
+	<div data-calculator>
+		<div data-page-name="page">
+			<input type="text" name="x" data-storagable="x">
+			<input type="text" name="y" data-storagable="y">
+			<button id="calculate">Рассчитать</button>
+			<div id="compute" data-computable="{{x}} + 2*{{y}}"></div>
+		</div>
+	</div>
+
+	<script src="main.js"></script>
+</body>
+</html>
