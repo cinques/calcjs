@@ -1,15 +1,66 @@
-var calculateBtn = document.getElementById('calculate');
-calculateBtn.addEventListener('click', onCalculate);
-
-document.querySelectorAll('[data-computable]').forEach(elem => {
-	elem.compute = compute.bind(elem);
+document.addEventListener("DOMContentLoaded", () => { 
+	init();
 });
 
-function onCalculate() {
-	let computeElem = document.querySelector('[data-computable]');
-	alert(computeElem.compute());
+function init() {
+	getPages();
+	showFirstPage();
+	bindCompute();
+	syncComputeAndInput();
+	initNavigation();
 }
 
+function getPages() {
+	window.pages = {};
+	document.querySelectorAll('[data-page-name]').forEach(page => {
+		pages[page.getAttribute('data-page-name')] = page;
+		page.style.display = 'none';
+	});
+};
+
+function showFirstPage() {
+	pages[Object.keys(pages)[0]].style.display = 'block';	
+}
+
+function bindCompute() {
+	document.querySelectorAll('[data-computable]').forEach(elem => {
+		elem.compute = compute.bind(elem);
+	});	
+}
+
+function syncComputeAndInput() {
+	document.querySelectorAll('#page input[type="text"]').forEach(input => {
+		input.oninput = document.querySelector('#sum').compute;
+	});
+
+	document.querySelectorAll('#page2 input[type="text"]').forEach(input => {
+		input.oninput = document.querySelector('#substraction').compute;
+	});
+}
+
+function initNavigation() {
+	function navigate() {
+		var page = pages[this.getAttribute('data-navigate-to')];
+		if (!page)
+			return false;
+		
+		this.style.display = 'none';
+		page.style.display = 'block';
+		return false;
+	}
+
+	document.querySelectorAll('[data-navigate-to]').forEach(element => {
+		if (element.nodeName === "FORM") {
+			element.onsubmit = navigate;
+		} else {
+			element.onclick = navigate;
+		}
+	})
+}
+
+/*
+ * Расчет выражения из аттрибута data-computable
+ */
 function compute() {
 	let expression = this.getAttribute('data-computable');
 
@@ -25,7 +76,9 @@ function compute() {
 		expression = expression.replace(template, value);
 	})
 
-	return eval(expression);
+	with (Math) {
+		this.innerHTML = eval(expression);
+	}
 };
 
 
