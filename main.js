@@ -6,7 +6,8 @@ function init() {
 	getPages();
 	showFirstPage();
 	bindCompute();
-	syncComputeAndInput();
+	syncSubmitAndCompute();
+	syncInputAndLocalstorage();
 	initNavigation();
 }
 
@@ -29,13 +30,21 @@ function bindCompute() {
 }
 
 
-function syncComputeAndInput() {
+function syncSubmitAndCompute() {
 	document.querySelectorAll('form').forEach(form => {
 		form.addEventListener('submit', (event) => {
 			form.childNodes.forEach(element => {
 				element.hasAttribute && element.hasAttribute('data-computable') && element.compute();
 			})
 			event.preventDefault();
+		})
+	})
+}
+
+function syncInputAndLocalstorage() {
+	document.querySelectorAll('input[data-storagable]').forEach(input =>{
+		input.addEventListener('input', () => {
+			localStorage.setItem(input.getAttribute('data-storagable'), input.value);
 		})
 	})
 }
