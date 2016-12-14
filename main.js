@@ -28,33 +28,31 @@ function bindCompute() {
 	});	
 }
 
-function syncComputeAndInput() {
-	document.querySelectorAll('#page input[type="text"]').forEach(input => {
-		input.oninput = document.querySelector('#sum').compute;
-	});
 
-	document.querySelectorAll('#page2 input[type="text"]').forEach(input => {
-		input.oninput = document.querySelector('#substraction').compute;
-	});
+function syncComputeAndInput() {
+	document.querySelectorAll('form').forEach(form => {
+		form.addEventListener('submit', (event) => {
+			form.childNodes.forEach(element => {
+				element.hasAttribute && element.hasAttribute('data-computable') && element.compute();
+			})
+			event.preventDefault();
+		})
+	})
 }
 
 function initNavigation() {
-	function navigate() {
+	function navigate(event) {
 		var page = pages[this.getAttribute('data-navigate-to')];
 		if (!page)
-			return false;
+			return;
 		
 		this.style.display = 'none';
 		page.style.display = 'block';
-		return false;
 	}
 
 	document.querySelectorAll('[data-navigate-to]').forEach(element => {
-		if (element.nodeName === "FORM") {
-			element.onsubmit = navigate;
-		} else {
-			element.onclick = navigate;
-		}
+		let isForm = element.nodeName === "FORM";
+		element.addEventListener(isForm ? 'submit' : 'click', navigate);
 	})
 }
 

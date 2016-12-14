@@ -6,22 +6,21 @@
 </head>
 <body>
 	<div data-calculator>
-		<form id="page" data-page-name="page" data-navigate-to="page2">
+
+		<form data-page-name="page">
 			<input type="text" name="x" data-storagable="x">
-			+
+			+ sin 
 			<input type="text" name="y" data-storagable="y">
-			<div id="sum" data-computable="{{x}} + sin({{y}})"></div>
-			<input type="submit" value="Далее">
+			<div data-computable="{{x}} + sin({{y}})"></div>
+			<input type="submit" value="Далее" data-navigate-to="page2">
 		</form>
-		<form id="page2" data-page-name="page2">
+
+		<form data-page-name="page2">
 			<input type="text" name="x2" data-storagable="x2">
 			-
 			<input type="text" name="y2" data-storagable="y2">
-			<div id="substraction" data-computable="{{x2}} - {{y2}}"></div>
-			<button data-navigate-to="page3">Еще</button>
-			<div data-page-name="page3">
-				<p>Рассчеты окончены</p>
-			</div>
+			<div data-computable="{{x2}} - {{y2}}"></div>
+			<input type="submit" value="Окончить рассчет"/>
 		</form>
 	</div>
 	<script src="main.js"></script>
